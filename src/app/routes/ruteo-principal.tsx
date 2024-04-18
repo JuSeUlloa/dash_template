@@ -4,6 +4,7 @@ import { Sesion } from "../components/public/Sesion";
 import { Registro } from '../components/public/Registro';
 import { Error } from '../components/shared/Error';
 import { TableroPrincipal } from '../contenedor/tablero-principal';
+import { Vigilante } from '../seguridad/vigilante';
 
 
 const LazySesion = lazy(() => import("../components/public/Sesion").then(() => ({ default: Sesion })));
@@ -18,12 +19,11 @@ export const RuteoPrincipal = () => {
     return (
         <Routes>
             <Route path='/' element={<LazySesion />} />
-            <Route path='/signing' element={<LazySesion />} />
-            <Route path='/register' element={<LazyRegistro />} />
+            <Route path='/login' element={<LazySesion />} />
             <Route path='/register' element={<LazyRegistro />} />
 
-            <Route>
-                <Route path='/dashboard/*' element={<LazyTablero />} />
+            <Route element={<Vigilante />}>
+                <Route path='/dash/*' element={<LazyTablero />} />
             </Route>
             <Route path='*' element={<LazyError />} />
         </Routes>

@@ -5,6 +5,7 @@ import { Sesion } from './app/components/public/Sesion';
 import { Error } from './app/components/shared/Error';
 import { Suspense } from 'react';
 import { RuteoPrincipal } from './app/routes/ruteo-principal';
+import { ToastContainer } from 'react-toastify';
 
 /* Cargar Renderizado */
 
@@ -24,6 +25,7 @@ const cargando = (
 function App() {
   return (
     <BrowserRouter >
+      <ToastContainer />
       <Suspense fallback={cargando}>
         <RuteoPrincipal />
       </Suspense>

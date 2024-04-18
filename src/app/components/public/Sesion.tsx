@@ -8,6 +8,9 @@ import ServicioAcceso from "../../services/servicio-acceso";
 import { jwtDecode } from "jwt-decode";
 import jsSHA from "jssha";
 
+import DatosSesion from "../../models/datosSesion";
+import { crearMensaje } from "../../utilities/funciones/mensajes";
+
 export const Sesion = () => {
 
     const navigate = useNavigate();
@@ -19,6 +22,7 @@ export const Sesion = () => {
 
     let { correoAcceso, claveAcceso, dobleEnlace, objeto } = useFormulario<Acceso>(new Acceso(0, "", ""));
 
+    const navegacion = useNavigate();
 
     const enviarFormulario = async (frm: formHtml) => {
         frm.preventDefault();
@@ -35,13 +39,24 @@ export const Sesion = () => {
             objeto.claveAcceso = claveCifrar;
 
             const respuesta = await ServicioAcceso.iniciarSesion(objeto);
-            if (respuesta.token) {
-                const objRecibido: any = jwtDecode(respuesta.token);
-                localStorage.setItem("tokenAutorizacion", respuesta.token);
+
+            if (respuesta.tokenApp) {
+                const objRecibido: any = jwtDecode(respuesta.tokenApp);
+                const datosUsuario = new DatosSesion(
+                    objRecibido.id,
+                    objRecibido.nombresUsuario,
+                    objRecibido.apellidosUsuario,
+                    objRecibido.nombreAcceso,
+                );
+                console.log(objRecibido);
+
+                localStorage.setItem("tokenAutorizacion", respuesta.tokenApp);
+                navegacion("/dash")
+                crearMensaje("success", "Bienvenido " + datosUsuario.nombresUsuario);
             } else {
                 limpiarCajas(formulario);
             }
-
+            setEnProceso(false);
 
         }
 
