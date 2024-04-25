@@ -13,64 +13,63 @@ import { crearMensaje } from "../../utilities/funciones/mensajes";
 
 export const Sesion = () => {
 
-    const navigate = useNavigate();
     type formHtml = React.FormEvent<HTMLFormElement>;
     const [enProceso, setEnProceso] = useState<boolean>(false);
 
 
     /* const { actualizar } = useContext(ContextoUsuario) as propUsuario; */
 
-    let { correoAcceso, claveAcceso, dobleEnlace, objeto } = useFormulario<Acceso>(new Acceso(0, "", ""));
+    let { nombreAcceso, claveAcceso, dobleEnlace, objeto } = useFormulario<Acceso>(new Acceso(0, "", ""));
 
     const navegacion = useNavigate();
 
-    const enviarFormulario = async (frm: formHtml) => {
-        frm.preventDefault();
-        setEnProceso(true);
-        const formulario = frm.currentTarget;
-        formulario.classList.add("was-validated");
-        if (formulario.checkValidity() === false) {
+        const enviarFormulario = async (frm: formHtml) => {
             frm.preventDefault();
-            frm.stopPropagation();
-        } else {
-            let objSha512 = new jsSHA("SHA-512", "TEXT", { encoding: "UTF8" });
-
-            const claveCifrar = objSha512.update(objeto.claveAcceso).getHash("HEX");
-            objeto.claveAcceso = claveCifrar;
-
-            const respuesta = await ServicioAcceso.iniciarSesion(objeto);
-
-            if (respuesta.tokenApp) {
-                const objRecibido: any = jwtDecode(respuesta.tokenApp);
-                const datosUsuario = new DatosSesion(
-                    objRecibido.id,
-                    objRecibido.nombresUsuario,
-                    objRecibido.apellidosUsuario,
-                    objRecibido.nombreAcceso,
-                );
-                console.log(objRecibido);
-
-                localStorage.setItem("tokenAutorizacion", respuesta.tokenApp);
-                navegacion("/dash")
-                crearMensaje("success", "Bienvenido " + datosUsuario.nombresUsuario);
+            setEnProceso(true);
+            const formulario = frm.currentTarget;
+            formulario.classList.add("was-validated");
+            if (formulario.checkValidity() === false) {
+                frm.preventDefault();
+                frm.stopPropagation();
             } else {
-                limpiarCajas(formulario);
+                let objSha512 = new jsSHA("SHA-512", "TEXT", { encoding: "UTF8" });
+
+                const claveCifrar = objSha512.update(objeto.claveAcceso).getHash("HEX");
+                objeto.claveAcceso = claveCifrar;
+
+                const respuesta = await ServicioAcceso.iniciarSesion(objeto);
+
+                if (respuesta.tokenApp) {
+                    const objRecibido: any = jwtDecode(respuesta.tokenApp);
+                    const datosUsuario = new DatosSesion(
+                        objRecibido.id,
+                        objRecibido.nombresUsuario,
+                        objRecibido.apellidosUsuario,
+                        objRecibido.nombreAcceso,
+                    );
+                    console.log(objRecibido);
+
+                    localStorage.setItem("tokenAutorizacion", respuesta.tokenApp);
+                    navegacion("/dash")
+                    crearMensaje("success", "Bienvenido " + datosUsuario.nombresUsuario);
+                } else {
+                    limpiarCajas(formulario);
+                }
+                setEnProceso(false);
+
             }
-            setEnProceso(false);
 
         }
-
-    }
 
 
     /* limpiar campos */
     const limpiarCajas = (formulario: HTMLFormElement) => {
         formulario.reset();
 
-        objeto.correoAcceso = "";
+        objeto.nombreAcceso = "";
         objeto.claveAcceso = "";
 
-        formulario.correoAcceso.value = "";
+        formulario.nombreAcceso.value = "";
         formulario.claveAcceso.value = "";
 
         formulario.classList.remove("was-validated");
@@ -90,7 +89,7 @@ export const Sesion = () => {
                                 <small className="pb-4 d-block">No tienes una Cuenta?
                                     &nbsp;<Link to="/register">Click aquí</Link></small>
                                 <Form onSubmit={enviarFormulario} validated={enProceso}>
-                                    <Form.Group className="mb-3" controlId="correoAcceso">
+                                    <Form.Group className="mb-3" controlId="nombreAcceso">
                                         <Form.Label className="form-label">
                                             <span className="rojito">*</span> Correo Electronico
                                         </Form.Label>
@@ -98,8 +97,8 @@ export const Sesion = () => {
                                             type="text"
                                             className="form-control"
                                             required
-                                            name="correoAcceso"
-                                            value={correoAcceso}
+                                            name="nombreAcceso"
+                                            value={nombreAcceso}
                                             onChange={dobleEnlace} />
                                     </Form.Group>
                                     <Form.Group className="mb-3" controlId="claveAcceso">

@@ -14,11 +14,12 @@ import {
 import { ReactComponent as LogoWhite } from "../../assets/images/logos/adminprowhite.svg";
 import user1 from "../../assets/images/users/user4.jpg";
 import { ReactComponent as LogoDark } from "../../assets/images/logos/adminpro.svg";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { MouseEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const MenuSuperior = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navegacion = useNavigate();
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -28,6 +29,13 @@ export const MenuSuperior = () => {
     };
     const showMobilemenu = () => {
         document.getElementById("sidebarArea")?.classList.toggle("showSidebar");
+    };
+
+
+    const cerrarSesion = (event: MouseEvent<HTMLElement>) => {
+        event.preventDefault();
+        localStorage.removeItem("tokenAutorizacion");
+        navegacion("/login");
     };
 
     return (
@@ -63,49 +71,30 @@ export const MenuSuperior = () => {
             </div>
 
             <Collapse navbar isOpen={isOpen}>
-                <Nav className="me-auto" navbar>
-                    <NavItem>
-                        <Link to="/starter" className="nav-link">
-                            Starter
-                        </Link>
-                    </NavItem>
-                    <NavItem>
-                        <Link to="/about" className="nav-link">
-                            About
-                        </Link>
-                    </NavItem>
-                    <UncontrolledDropdown inNavbar nav>
-                        <DropdownToggle caret nav>
-                            DD Menu
+                <Nav className="navbar-nav me-auto" navbar />
+                <span className="d-flex justify-content-center">
+
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                        <DropdownToggle color="transparent">
+                            <img
+                                src=""
+                                alt="profile"
+                                className="rounded-circle"
+                                width="30"
+                            ></img>
                         </DropdownToggle>
-                        <DropdownMenu end>
-                            <DropdownItem>Option 1</DropdownItem>
-                            <DropdownItem>Option 2</DropdownItem>
+                        <DropdownMenu>
+                            <DropdownItem header>Info</DropdownItem>
+                            <DropdownItem>My Account</DropdownItem>
+                            <DropdownItem>Edit Profile</DropdownItem>
                             <DropdownItem divider />
-                            <DropdownItem>Reset</DropdownItem>
+                            <DropdownItem>My Balance</DropdownItem>
+                            <DropdownItem>Inbox</DropdownItem>
+                            <DropdownItem onClick={cerrarSesion}>Logout</DropdownItem>
                         </DropdownMenu>
-                    </UncontrolledDropdown>
-                </Nav>
-                <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-                    <DropdownToggle color="transparent">
-                        <img
-                            src={user1}
-                            alt="profile"
-                            className="rounded-circle"
-                            width="30"
-                        ></img>
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        <DropdownItem header>Info</DropdownItem>
-                        <DropdownItem>My Account</DropdownItem>
-                        <DropdownItem>Edit Profile</DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem>My Balance</DropdownItem>
-                        <DropdownItem>Inbox</DropdownItem>
-                        <DropdownItem>Logout</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                    </Dropdown>
+                </span>
             </Collapse>
-        </Navbar>
+        </Navbar >
     );
 }

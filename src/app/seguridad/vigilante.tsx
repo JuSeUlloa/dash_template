@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { Outlet, Navigate } from "react-router-dom";
 
 
