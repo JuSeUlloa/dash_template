@@ -5,7 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './assets/scss/style.scss';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import 'react-toastify/dist/ReactToastify.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

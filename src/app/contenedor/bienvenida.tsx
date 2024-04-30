@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { MouseEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DatosSesion from "../models/datosSesion";
 
 export const Bienvenida = () => {
@@ -22,14 +22,25 @@ export const Bienvenida = () => {
     };
 
     return (
-        <div className="mt-3">
-            <div className="d-flex justify-content-center">
-                <p>Bienvenido {datosUsuario.nombresUsuario}</p>
-            </div>
-
-            <div className="text-center">
-                <button className="btn btn-outline-primary" onClick={cerrarSesion}>Cerrar Sesion</button>
+        <div className="">
+            <h5 className="text-capitalize  fst-italic fw-bolder">Inicio</h5>
+            <nav className="" aria-label="breadcrumb">
+                <ol className="breadcrumb fs-6">
+                    <Link className="text-decoration-none link-info fw-normal breadcrumb-item" to="/dash">Incio</Link>
+                    <li className="active breadcrumb-item" aria-current="page">Bienvenida</li>
+                    {/*     <li className="active breadcrumb-item" aria-current="page">chartjs</li>
+                             */}
+                </ol>
+            </nav>
+            <div className="card" >
+                <div className="p-4 card-body" >
+                    <p className="mb-0" >
+                        This is some text within a card block.
+                    </p>
+                </div >
             </div>
         </div>
+
+
     );
 }

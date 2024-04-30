@@ -7,9 +7,10 @@ class ServicioAcceso {
         const datosEnviar = {
             method: "POST",
             body: JSON.stringify(objAcceso),
-            headers: { "Content-Type": "application/json; charset=UTF-8","Access-Control-Allow-Origin":"*" }
+            headers: { "Content-Type": "application/json; chatset=UTF-8","Access-Control-Allow-Origin":"*" }
         }
         const url = ApiBack.URL + ApiBack.INICIAR_SESION;
+        
         const respuesta = fetch(url, datosEnviar)
             .then((respuesta) => respuesta.json())
             .then((datos) => { return datos; })

@@ -23,43 +23,45 @@ export const Sesion = () => {
 
     const navegacion = useNavigate();
 
-        const enviarFormulario = async (frm: formHtml) => {
+    const enviarFormulario = async (frm: formHtml) => {
+        frm.preventDefault();
+        setEnProceso(true);
+        const formulario = frm.currentTarget;
+        formulario.classList.add("was-validated");
+        if (formulario.checkValidity() === false) {
             frm.preventDefault();
-            setEnProceso(true);
-            const formulario = frm.currentTarget;
-            formulario.classList.add("was-validated");
-            if (formulario.checkValidity() === false) {
-                frm.preventDefault();
-                frm.stopPropagation();
+            frm.stopPropagation();
+        } else {
+            let objSha512 = new jsSHA("SHA-512", "TEXT", { encoding: "UTF8" });
+
+            const claveCifrar = objSha512.update(objeto.claveAcceso).getHash("HEX");
+            objeto.claveAcceso = claveCifrar;
+
+            const respuesta = await ServicioAcceso.iniciarSesion(objeto);
+
+            console.log(respuesta);
+            if (respuesta.tokenApp) {
+                
+                const objRecibido: any = jwtDecode(respuesta.tokenApp);
+                const datosUsuario = new DatosSesion(
+                    objRecibido.id,
+                    objRecibido.nombresUsuario,
+                    objRecibido.apellidosUsuario,
+                    objRecibido.nombreAcceso,
+                );
+
+                localStorage.setItem("tokenAutorizacion", respuesta.tokenApp);
+                navegacion("/dash")
+                crearMensaje("success", "Bienvenido " + datosUsuario.nombresUsuario);
             } else {
-                let objSha512 = new jsSHA("SHA-512", "TEXT", { encoding: "UTF8" });
-
-                const claveCifrar = objSha512.update(objeto.claveAcceso).getHash("HEX");
-                objeto.claveAcceso = claveCifrar;
-
-                const respuesta = await ServicioAcceso.iniciarSesion(objeto);
-
-                if (respuesta.tokenApp) {
-                    const objRecibido: any = jwtDecode(respuesta.tokenApp);
-                    const datosUsuario = new DatosSesion(
-                        objRecibido.id,
-                        objRecibido.nombresUsuario,
-                        objRecibido.apellidosUsuario,
-                        objRecibido.nombreAcceso,
-                    );
-                    console.log(objRecibido);
-
-                    localStorage.setItem("tokenAutorizacion", respuesta.tokenApp);
-                    navegacion("/dash")
-                    crearMensaje("success", "Bienvenido " + datosUsuario.nombresUsuario);
-                } else {
-                    limpiarCajas(formulario);
-                }
-                setEnProceso(false);
-
+                crearMensaje("error", "Por favor revise credenciales");
+                limpiarCajas(formulario);
             }
+            setEnProceso(false);
 
         }
+
+    }
 
 
     /* limpiar campos */

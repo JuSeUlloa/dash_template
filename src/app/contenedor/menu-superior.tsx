@@ -48,8 +48,8 @@ export const MenuSuperior = () => {
                     <LogoWhite className="d-lg-none" />
                 </NavbarBrand>
                 <Button
-                    color="primary"
-                    className=" d-lg-none"
+                    color="secondary"
+                    className=" d-md-none"
                     onClick={() => showMobilemenu()}
                 >
                     <i className="bi bi-list"></i>
@@ -57,7 +57,7 @@ export const MenuSuperior = () => {
             </div>
             <div className="hstack gap-2">
                 <Button
-                    color="primary"
+                    color="secondary"
                     size="sm"
                     className="d-sm-block d-md-none"
                     onClick={Handletoggle}

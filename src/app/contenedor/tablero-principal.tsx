@@ -14,7 +14,10 @@ export const TableroPrincipal = () => {
                 </aside>
                 {/********Content Area**********/}
                 <div className="contentArea">
-                    <RuteoInterno />
+                    <div className=" p-4 boxContainer container-fluid">
+
+                        <RuteoInterno />
+                    </div>
                 </div>
             </div>
         </main>
