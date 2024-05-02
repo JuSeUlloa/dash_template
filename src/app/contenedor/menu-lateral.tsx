@@ -51,7 +51,7 @@ export const MenuLateral = () => {
                   data-bs-parent="#sidebar-nav"
                 >
                   {opcion.children.map((subMenu: any, indice: number) => (
-                    <li key={"sub" + indice} style={{ listStyle: "none"}}>
+                    <li key={"sub" + indice} style={{ listStyle: "none" }}>
                       <Link className={
                         location.pathname === subMenu.href
                           ? "active nav-link fs-6"

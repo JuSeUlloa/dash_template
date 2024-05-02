@@ -15,12 +15,6 @@ export const Bienvenida = () => {
         objRecibido.nombreAcceso,
     );
 
-    const cerrarSesion = (event: MouseEvent<HTMLElement>) => {
-        event.preventDefault();
-        localStorage.removeItem("tokenAutorizacion");
-        navegacion("/login");
-    };
-
     return (
         <div className="">
             <h5 className="text-capitalize  fst-italic fw-bolder">Inicio</h5>
@@ -35,7 +29,7 @@ export const Bienvenida = () => {
             <div className="card" >
                 <div className="p-4 card-body" >
                     <p className="mb-0" >
-                        This is some text within a card block.
+                        {/* Aca va el contenido */}
                     </p>
                 </div >
             </div>

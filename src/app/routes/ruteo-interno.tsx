@@ -3,11 +3,13 @@ import { Bienvenida } from '../contenedor/bienvenida';
 import { Route, Routes } from 'react-router-dom';
 import { Error } from '../components/shared/Error';
 import { DepartamentoAdmin } from '../components/private/departamento/departamentoAdmin';
+import { DepartamentoCrear } from '../components/private/departamento/departamentoCrear';
 
 
 
 const LazyBienvenida = lazy(() => import('../contenedor/bienvenida').then(() => ({ default: Bienvenida })));
 const LazyDepartamentoAdmin = lazy(() => import('../components/private/departamento/departamentoAdmin').then(() => ({ default: DepartamentoAdmin })));
+const LazyDepartamentoCrear = lazy(() => import('../components/private/departamento/departamentoCrear').then(() => ({ default: DepartamentoCrear })));
 const LazyError = lazy(() => import('../components/shared/Error').then(() => ({ default: Error })));
 // Cargar componentes internos
 // ***********************************************************************************************
@@ -26,6 +28,7 @@ export const RuteoInterno = () => {
     return (
         <Routes>
             <Route path="/adminDepartment" element={< LazyDepartamentoAdmin />} />
+            <Route path="/addDepartment" element={< LazyDepartamentoCrear />} />
 
             <Route path="/" element={< LazyBienvenida />} />
             <Route path="*" element={< LazyError />} />

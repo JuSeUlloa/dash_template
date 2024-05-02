@@ -4,6 +4,15 @@ const ApiBack = {
 
     REGISTRO_USUARIO: "/api/public/register/user",
     INICIAR_SESION: "/api/public/acces/signin",
+    
+    
+    
+    
+    DEPARTAMENTO_CREAR: "/api/private/department/add",
+    DEPARTAMENTO_LISTAR: "/api/private/department/list",
+
+
+
 
 };
 
