@@ -1,16 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Departamento from "../../../models/departamento";
 import ApiBack from "../../../utilities/domains/apiBack";
 import ServicioPrivado from "../../../services/servicio-privado";
 import { crearMensaje } from "../../../utilities/funciones/mensajes";
 import { useFormulario } from "../../../utilities/misHooks/useFormulario";
 
-export const DepartamentoCrear = () => {
+export const DepartamentoEditar = () => {
 
     type formHtml = React.FormEvent<HTMLFormElement>;
     const [enProceso, setEnProceso] = useState<boolean>(false);
+    const [terminado, setTerminado] = useState<boolean>(false);
+
+    let parametro = useParams();
+
+    const obtenerDepartamento = async () => {
+        const url = ApiBack.UN_DEPARTAMENTO + "/" + Number(parametro.codDepartamento);
+        const resultado = await ServicioPrivado.peticionGET(url);
+
+        objeto.nombreDepartamento = resultado.nombreDepartamento;
+        if (resultado) {
+            setTerminado(true);
+        }
+    }
 
     let { nombreDepartamento, dobleEnlace, objeto } = useFormulario<Departamento>(new Departamento(0, ""));
 
@@ -26,20 +39,23 @@ export const DepartamentoCrear = () => {
             frm.preventDefault();
             frm.stopPropagation();
         } else {
-            const resultado = await ServicioPrivado.peticionPOST(ApiBack.DEPARTAMENTO_CREAR, objeto);
+            objeto.codDepartamento = Number(parametro.codDepartamento);
+            const resultado = await ServicioPrivado.peticionPUT(ApiBack.DEPARTAMENTO_ACTUALIZAR, objeto);
             if (resultado) {
                 setEnProceso(false);
-                crearMensaje("success", "Departamento creado con exíto");
+                crearMensaje("success", "Departamento modificado con exíto");
                 navegacion("/dash/adminDepartment");
             } else {
-                crearMensaje("error", "Fallo al registrar el departamento");
+                crearMensaje("error", "Fallo al actualizar el departamento");
             }
 
             limpiarCajas(formulario);
         }
     };
 
-
+    useEffect(() => {
+        obtenerDepartamento();
+    }, []);
 
     const limpiarCajas = (formulario: HTMLFormElement) => {
         formulario.reset();
@@ -50,13 +66,13 @@ export const DepartamentoCrear = () => {
 
     return (
         <div>
-            <h5 className="text-capitalize  fst-italic fw-bolder">Crear</h5>
+            <h5 className="text-capitalize  fst-italic fw-bolder">Actualizar</h5>
             <nav className="" aria-label="breadcrumb">
                 <ol className="breadcrumb fs-6">
                     <Link className="text-decoration-none link-info fw-normal breadcrumb-item" to="/dash">Incio</Link>
                     <li className="active breadcrumb-item" aria-current="page">Departamento</li>
                     <Link className="text-decoration-none link-info fw-normal breadcrumb-item" to="/dash/adminDepartment">Administrar</Link>
-                    <li className="active breadcrumb-item" aria-current="page">Crear</li>
+                    <li className="active breadcrumb-item" aria-current="page">Actualizar</li>
                 </ol>
             </nav>
             <div className="m-4 card">
@@ -77,7 +93,7 @@ export const DepartamentoCrear = () => {
                                 </Form.Group>
                             </div>
                             <div className="border-top gap-2 d-flex align-items-center card-body">
-                                <Button type="submit" className="btn btn-success btn btn-secondary">Registrar</Button>
+                                <Button type="submit" className="btn btn-success btn btn-secondary">Actualizar</Button>
                                 <Button type="button" className="btn btn-dark ml-2 btn btn-secondary"
                                     onClick={(e) => {
                                         e.preventDefault();

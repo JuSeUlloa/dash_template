@@ -10,6 +10,9 @@ const ApiBack = {
     
     DEPARTAMENTO_CREAR: "/api/private/department/add",
     DEPARTAMENTO_LISTAR: "/api/private/department/list",
+    UN_DEPARTAMENTO: "/api/private/department/one",
+    DEPARTAMENTO_ACTUALIZAR: "/api/private/department/update",
+    DEPARTAMENTO_ELIMINAR: "/api/private/department/delete",
 
 
 
