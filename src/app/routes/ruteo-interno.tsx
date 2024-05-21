@@ -5,6 +5,7 @@ import { Error } from '../components/shared/Error';
 import { DepartamentoAdmin } from '../components/private/departamento/departamentoAdmin';
 import { DepartamentoCrear } from '../components/private/departamento/departamentoCrear';
 import { DepartamentoEditar } from '../components/private/departamento/depatamentoEditar';
+import { DepartamentoRutaAdminstrar } from '../components/private/departamento-ruta/depaRutaAdmin';
 
 
 
@@ -16,6 +17,9 @@ const LazyDepartamentoCrear = lazy(() => import('../components/private/departame
 const LazyDepartamentoActualizar = lazy(() => import('../components/private/departamento/depatamentoEditar').then(() => ({ default: DepartamentoEditar })));
 // Cargar componentes internos
 // ***********************************************************************************************
+const LazyDepaRutaAdmin = lazy(() => import('../components/private/departamento-ruta/depaRutaAdmin').then(() => ({ default: DepartamentoRutaAdminstrar })));
+
+
 const cargando = (
     <div className="d-flex justify-content-center">
         <div className="mt-3">
@@ -33,6 +37,11 @@ export const RuteoInterno = () => {
             <Route path="/adminDepartment" element={< LazyDepartamentoAdmin />} />
             <Route path="/addDepartment" element={< LazyDepartamentoCrear />} />
             <Route path="/updateDepartment/:codDepartamento" element={< LazyDepartamentoActualizar />} />
+
+
+            <Route path="/adminDepaRoute" element={< LazyDepaRutaAdmin />} />
+
+
 
             <Route path="/" element={< LazyBienvenida />} />
             <Route path="*" element={< LazyError />} />
